@@ -62,14 +62,6 @@
         justify-content: center;
       }
 
-      /* Optional: Adjust meta tag for mobile responsiveness */
-      @media only screen and (max-width: 768px) {
-        #myIframe, #unity-canvas {
-          width: 100%;
-          height: 100%;
-        }
-      }
-
       /* Basic spinner animation */
       .spinner {
         border: 8px solid #f3f3f3;
@@ -116,7 +108,7 @@
         document.getElementsByTagName('head')[0].appendChild(meta);
       }
 
-      // Create Unity instance dynamically
+      // Create Unity instance dynamically with optimized parameters
       createUnityInstance(document.querySelector("#unity-canvas"), {
         arguments: [],
         dataUrl: "Build/Main.data",
@@ -126,12 +118,12 @@
         companyName: "ManDev",
         productName: "Smart School Dashboard App",
         productVersion: "0.1.0",
-        // Once Unity is ready, hide the loading spinner
+        webAssemblyStreaming: true,  // Enable WebAssembly streaming
         onProgress: function (progress) {
-          if (progress == 1) {
-            hideLoadingSpinner();
+          if (progress === 1) {
+            hideLoadingSpinner();  // Hide spinner when loading is complete
           }
-        }
+        },
       });
     </script>
   </body>
