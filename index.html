@@ -16,6 +16,7 @@
         height: 100vh;
         flex-direction: column;
         background-color: #FF7500; /* Default background color */
+        text-align: center; /* Center text on the page */
       }
 
       /* Unity container for rendering Unity WebGL content */
@@ -29,10 +30,10 @@
       #myIframe {
         position: absolute;
         margin-left: 25%; /* To center it! */
-		margin-right: auto;
+        margin-right: auto;
         width: 50%;
-		background: transparent;
-		zoom: 75%;
+        background: transparent;
+        zoom: 75%;
         height: 100%;
         border: none;
         z-index: 2; /* Iframe above Unity canvas! */
@@ -48,6 +49,19 @@
         z-index: 1; /* Unity canvas below iframe */
       }
 
+      /* Loading spinner styles */
+      #loadingSpinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
       /* Optional: Adjust meta tag for mobile responsiveness */
       @media only screen and (max-width: 768px) {
         #myIframe, #unity-canvas {
@@ -55,9 +69,28 @@
           height: 100%;
         }
       }
+
+      /* Basic spinner animation */
+      .spinner {
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #FF7500;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
     </style>
   </head>
   <body>
+    <div id="loadingSpinner">
+      <div class="spinner"></div> Loading...
+    </div>
+
     <div id="unityContainer">
       <!-- Unity WebGL Canvas and iframe are added inside this container -->
       <iframe id="myIframe" src="" style="border:none;"></iframe>
@@ -69,15 +102,19 @@
 
     <script>
       var canvas = document.querySelector("#unity-canvas");
+
+      // Hide the loading spinner once Unity is ready
+      function hideLoadingSpinner() {
+        document.getElementById('loadingSpinner').style.display = 'none';
+      }
+
+      // Check if it's a mobile device and adjust viewport settings
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
         var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
       }
-
-      document.body.style.textAlign = "left";
 
       // Create Unity instance dynamically
       createUnityInstance(document.querySelector("#unity-canvas"), {
@@ -89,8 +126,12 @@
         companyName: "ManDev",
         productName: "Smart School Dashboard App",
         productVersion: "0.1.0",
-        // matchWebGLToCanvasSize: false, // Uncomment this if you want to control WebGL canvas render size separately.
-        // devicePixelRatio: 1, // Override low DPI rendering on high DPI displays.
+        // Once Unity is ready, hide the loading spinner
+        onProgress: function (progress) {
+          if (progress == 1) {
+            hideLoadingSpinner();
+          }
+        }
       });
     </script>
   </body>
