@@ -66,13 +66,7 @@
 
     <!-- Unity WebGL Loader -->
     <script src="Build/Main.loader.js"></script>
-    <script>
-      // Unity instantiation (ensure Unity's "yourBuild.json" is correct)
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/yourBuild.json", {
-        onProgress: UnityProgress
-      });
-    </script>
-
+	
     <script>
       var canvas = document.querySelector("#unity-canvas");
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
@@ -85,7 +79,6 @@
 
       document.body.style.textAlign = "left";
 
-      // Create Unity instance dynamically
       createUnityInstance(document.querySelector("#unity-canvas"), {
         arguments: [],
         dataUrl: "Build/Main.data",
@@ -95,8 +88,8 @@
         companyName: "ManDev",
         productName: "Smart School Dashboard App",
         productVersion: "0.1.0",
-        // matchWebGLToCanvasSize: false, // Uncomment this if you want to control WebGL canvas render size separately.
-        // devicePixelRatio: 1, // Override low DPI rendering on high DPI displays.
+        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
       });
     </script>
   </body>
